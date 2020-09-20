@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: bananode
+        labels:
+                app: bananode
+spec:
+        replicas: 12
+        selector:
+                matchLabels:
+                        app: bananode
+        template:
+                metadata:
+                        labels:
+                                app: bananode
+                spec:
+                        containers:
+                                - image: bananocoin/banano
+                                  name: bananode
+                                  ports:
+                                        - containerPort: 7072
+                                          name: http
+                                          protocol: TCP
+                                  volumeMounts: 
+                                        - mountPath: "/root"
+                                          name: "bananode-data"
+                        volumes:
+                                - name: "bananode-data"
+                                  persistentVolumeClaim:
+                                        claimName: "bananode-pvc"          
